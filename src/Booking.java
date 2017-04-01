@@ -1,24 +1,24 @@
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by Jiuding on 2017/3/28.
  */
 public class Booking {
     private int id;
-    private ArrayList<Vehicle> vehicles;
-    private Date startDate;
-    private Date endDate;
+    private Vehicle vehicle;
+    private Calendar startDate;
+    private Calendar endDate;
 
     /**
      * @param id id of the booking
-     * @param vehicles list of vehicle booked
+     * @param vehicle vehicle booked
      * @param startDate start date of the booking
      * @param endDate end date of the booking
      */
-    public Booking(int id, ArrayList<Vehicle> vehicles, Date startDate, Date endDate){
+    public Booking(int id, Vehicle vehicle, Calendar startDate, Calendar endDate){
         this.id = id;
-        this.vehicles = vehicles;
+        this.vehicle = vehicle;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -33,21 +33,21 @@ public class Booking {
     /**
      * @return list of vehicles booked in this booking
      */
-    public ArrayList<Vehicle> getVehicles() {
-        return vehicles;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
     /**
      * @return start date of the booking
      */
-    public Date getStartDate() {
+    public Calendar getStartDate() {
         return startDate;
     }
 
     /**
      * @return end date of the booking
      */
-    public Date getEndDate() {
+    public Calendar getEndDate() {
         return endDate;
     }
 }

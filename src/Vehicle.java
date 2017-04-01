@@ -1,5 +1,4 @@
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by Jiuding on 2017/3/28.
@@ -7,18 +6,17 @@ import java.util.HashMap;
 public class Vehicle {
     private String name;
     private String type;
-    private HashMap rentalRecord = new HashMap();
+    private ArrayList<Booking> bookings;
     private String location;
 
     /**
      * @param name name of the vehicle
      * @param type type of the vehicle
-     * @param location location of the vehicle
      */
-    public Vehicle(String name, String type, String location) {
+    public Vehicle(String name, String type) {
         this.name = name;
         this.type = type;
-        this.location = location;
+        this.bookings = new ArrayList<>();
     }
 
     /**
@@ -38,29 +36,44 @@ public class Vehicle {
     /**
      * @return list of rental record
      */
-    public HashMap getRentalRecord() {
-        return rentalRecord;
+    public ArrayList<Booking> getBookings() {
+        return this.bookings;
     }
 
-    /**
-     * @return location of the vehicle
-     */
-    public String getLocation() {
-        return location;
+
+    public boolean isAvailable(Calendar startDate, Calendar endDate) {
+        for (Booking booking : bookings){
+            if (endDate.before(booking.getStartDate())||startDate.after(booking.getEndDate())) continue;
+            else {
+                Calendar tempDate = (Calendar) startDate.clone();
+                while (tempDate.compareTo(endDate) != 0) {
+                    if (tempDate.compareTo(booking.getStartDate()) >= 0 && tempDate.compareTo(booking.getEndDate())<=0) return false;
+                    tempDate.add(Calendar.DATE, 1);
+                }
+                if (tempDate.compareTo(booking.getStartDate())>=0 && tempDate.compareTo(booking.getEndDate()) <= 0) return false;
+            }
+        }
+        return true;
     }
 
     /**
      * @param startDate start date of the rental record
      * @param endDate end date of the rental record
      */
-    public void insertRentalRecord(Date startDate, Date endDate){
-        rentalRecord.put(startDate, endDate);
+    public void insertRentalRecord(int id, Vehicle vehicle, Calendar startDate, Calendar endDate){
+        bookings.add(new Booking(id, vehicle, startDate, endDate));
+        System.out.print(", " + this.name);
     }
 
     /**
-     * @param startDate start date of the rental record
+     * @param id id of the booking
      */
-    public void deleteRentalRecord(Date startDate){
-        rentalRecord.remove(startDate);
+    public void deleteRentalRecord(int id){
+        for (Booking booking : bookings){
+            if (booking.getId() == id){
+                bookings.remove(booking);
+            }
+        }
+
     }
 }
