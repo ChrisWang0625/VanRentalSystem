@@ -25,6 +25,7 @@ public class VanRentalSystem {
             if (cmd[0].equals("Location")) {
                 depotVehicle(cmd[1], cmd[2], cmd[3]);
             } else if (cmd[0].equals("Request") || cmd[0].equals("Change")) {
+                System.out.println(cmd[0] + " " + cmd[1] + " debug");
                 int id = Integer.parseInt(cmd[1]);
                 Calendar startDate = convertStringToCalendar(cmd[2], cmd[3], cmd[4]);
                 Calendar endDate = convertStringToCalendar(cmd[5], cmd[6], cmd[7]);
@@ -35,22 +36,24 @@ public class VanRentalSystem {
                     else if (cmd[i].equals("Manual")) numManual = Integer.parseInt(cmd[i-1]);
                 }
                 if (cmd[0].equals("Request")) {
-                    System.out.println(cmd[1]);
-                    if (!checkRequest("Request", id, startDate, endDate, numAuto, numManual, vehicles)) {
-                        System.out.println("Booking rejected");
-                    } else {
+
+                    if (checkRequest(startDate, endDate, numAuto, numManual, vehicles)) {
                         System.out.print("Booking " + id);
                         processRequest("Request", id, startDate, endDate, numAuto, numManual);
+
                         if(sc.hasNextLine()) {
                             System.out.println();
                         }
+
+                    } else {
+                        System.out.println("Booking rejected");
                     }
                 } else if (cmd[0].equals("Change")) {
                     ArrayList<Booking> bookingArrayList = getBookingList(id);
                     if (bookingArrayList.size()==0) System.out.println("Change rejected");
                     else {
                         cancelBooking(bookingArrayList);
-                        if (!checkRequest("Change", id, startDate, endDate, numAuto, numManual, vehicles)) {
+                        if (!checkRequest(startDate, endDate, numAuto, numManual, vehicles)) {
                             recoverBooking(bookingArrayList);
                             System.out.println("Change Rejected");
                         }
@@ -129,7 +132,7 @@ public class VanRentalSystem {
         return allVehicles;
     }
 
-    private static boolean checkRequest(String requestType, int id, Calendar startDate, Calendar endDate,
+    private static boolean checkRequest(Calendar startDate, Calendar endDate,
                                          int autoNum, int manualNum, ArrayList<Vehicle> allVehicles) {
 
         int autoAvailable = 0;
@@ -147,21 +150,49 @@ public class VanRentalSystem {
         else return true;
     }
 
-    private static void processRequest (String requestType, int id, Calendar startDate, Calendar endDate,
+    private static boolean processRequest (String requestType, int id, Calendar startDate, Calendar endDate,
                                            int autoNum, int manualNum){
+        //TODO: try do booking without initialize arraylist
+        ArrayList<Vehicle> candidates = new ArrayList<>();
         int i = 0;
-        while (i < locations.size()) {
-            Location location = locations.get(i);
-            int[] arr = location.book(requestType, id, startDate, endDate, autoNum, manualNum);
-            int autoLeft = arr[0];
-            int manualLeft = arr[1];
+        for (Vehicle v : vehicles) {
+            if (autoNum == 0 && manualNum == 0) {
+                break;
+            }
+            if (v.getType().equals("Automatic")){
+                if (autoNum == 0) continue;
+                if (v.isAvailable(startDate, endDate)){
+                    candidates.add(v);
+                    autoNum--;
+                }
+            } else if (v.getType().equals("Manual")) {
+                if (manualNum == 0) continue;
+                if (v.isAvailable(startDate, endDate)) {
+                    candidates.add(v);
+                    manualNum--;
+                }
+
+            }
+        }
+
+
+            //int[] arr = location.book(requestType, id, startDate, endDate, autoNum, manualNum);
+            /*int autoLeft = arr[0];
+            int manualLeft = arr[1];*//*
             if (autoLeft == 0 && manualLeft == 0) break;
             else {
                 autoNum = autoLeft;
                 manualNum = manualLeft;
                 i++;
-            }
+            }*/
+        if (autoNum!=0 || manualNum!=0) {
+            return false;
         }
+        for (Vehicle candidate : candidates) {
+            candidate.insertRentalRecord(id, candidate, startDate, endDate);
+        }
+        return true;
+
     }
 
     private static Calendar convertStringToCalendar(String hour, String month, String day) {

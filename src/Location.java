@@ -50,7 +50,6 @@ public class Location {
 
         int i = autoRequested;
         int j = manualRequested;
-        //System.out.println(i + " " + j);
         int count = 0;
         for (Vehicle vehicle: vehicles){
             if (i == 0 && j == 0) break;
