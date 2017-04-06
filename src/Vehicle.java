@@ -7,15 +7,16 @@ public class Vehicle {
     private String name;
     private String type;
     private ArrayList<Booking> bookings;
-    private String location;
+    private Location location;
 
     /**
      * @param name name of the vehicle
      * @param type type of the vehicle
      */
-    public Vehicle(String name, String type) {
+    public Vehicle(String name, String type, Location location) {
         this.name = name;
         this.type = type;
+        this.location = location;
         this.bookings = new ArrayList<>();
     }
 
@@ -39,6 +40,8 @@ public class Vehicle {
     public ArrayList<Booking> getBookings() {
         return this.bookings;
     }
+
+    public Location getLocation() {return this.location;}
 
 
     public boolean isAvailable(Calendar startDate, Calendar endDate) {

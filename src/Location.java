@@ -20,44 +20,69 @@ public class Location {
         return vehicles;
     }
 
+    public ArrayList<Vehicle> getAutomatics() {
+        ArrayList<Vehicle> automatics = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getType().equals("Automatic")){
+                automatics.add(vehicle);
+            }
+        }
+        return automatics;
+    }
+
+    public ArrayList<Vehicle> getManual() {
+        ArrayList<Vehicle> manuals = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getType().equals("Manual")){
+                manuals.add(vehicle);
+            }
+        }
+        return manuals;
+    }
+
     public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
     }
 
-    public boolean book(String requestType, int id, Calendar startDate, Calendar endDate, int autoRequested,
+    public int[] book(String requestType, int id, Calendar startDate, Calendar endDate, int autoRequested,
                                 int manualRequested){
         ArrayList<Vehicle> candidates = new ArrayList<>();
+
         int i = autoRequested;
         int j = manualRequested;
+        //System.out.println(i + " " + j);
+        int count = 0;
         for (Vehicle vehicle: vehicles){
             if (i == 0 && j == 0) break;
             if (vehicle.getType().equals("Automatic")){
                 if (i == 0) continue;
                 if (vehicle.isAvailable(startDate, endDate)){
                     candidates.add(vehicle);
+                    count++;
                     i--;
                 }
             } else if (vehicle.getType().equals("Manual")){
                 if (j == 0) continue;
                 if (vehicle.isAvailable(startDate, endDate)){
                     candidates.add(vehicle);
+                    count++;
                     j--;
                 }
             }
         }
 
-        if (i != 0 || j != 0) return false;
+        int[] returnArray = {i, j};
 
-        if (requestType.equals("Request")) {
-            System.out.print("Booking " + id + " " + this.name);
-        } else if (requestType.equals("Change")) {
-            System.out.print("Change " + id + " " + this.name);
+        if (count == 0) return returnArray;
+        else {
+            System.out.print(" " + this.name);
+            for (Vehicle candidate: candidates) {
+                //System.out.println(candidate.getName() + " " + candidate.getType());
+                candidate.insertRentalRecord(id, candidate, startDate, endDate);
+
+            }
         }
-        for (Vehicle candidate: candidates) {
-            candidate.insertRentalRecord(id, candidate, startDate, endDate);
-        }
-        System.out.print("; ");
-        System.out.println();
-        return true;
+        System.out.print(";");
+        return returnArray;
     }
 }
