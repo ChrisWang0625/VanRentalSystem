@@ -25,7 +25,7 @@ public class VanRentalSystem {
             if (cmd[0].equals("Location")) {
                 depotVehicle(cmd[1], cmd[2], cmd[3]);
             } else if (cmd[0].equals("Request") || cmd[0].equals("Change")) {
-                System.out.println(cmd[0] + " " + cmd[1] + " debug");
+                //System.out.println(cmd[0] + " " + cmd[1] + " debug");
                 int id = Integer.parseInt(cmd[1]);
                 Calendar startDate = convertStringToCalendar(cmd[2], cmd[3], cmd[4]);
                 Calendar endDate = convertStringToCalendar(cmd[5], cmd[6], cmd[7]);
@@ -145,31 +145,34 @@ public class VanRentalSystem {
             }
         }
 
-        System.out.println(autoAvailable + " " + manualAvailable);
+        //System.out.println(autoAvailable + " " + manualAvailable);
         if (autoAvailable < autoNum || manualAvailable < manualNum) return false;
         else return true;
     }
 
+
+
     private static boolean processRequest (String requestType, int id, Calendar startDate, Calendar endDate,
                                            int autoNum, int manualNum){
-        //TODO: try do booking without initialize arraylist
-        ArrayList<Vehicle> candidates = new ArrayList<>();
+        //ArrayList<Vehicle> candidates = new ArrayList<>();
         int i = 0;
+        int j = autoNum;
+        int k = manualNum;
         for (Vehicle v : vehicles) {
-            if (autoNum == 0 && manualNum == 0) {
+            if(j == 0 && k == 0) {
                 break;
             }
             if (v.getType().equals("Automatic")){
-                if (autoNum == 0) continue;
+                if (j == 0) continue;
                 if (v.isAvailable(startDate, endDate)){
-                    candidates.add(v);
-                    autoNum--;
+                    v.insertRentalRecord(id, v, startDate, endDate);
+                    j--;
                 }
             } else if (v.getType().equals("Manual")) {
-                if (manualNum == 0) continue;
+                if (k == 0) continue;
                 if (v.isAvailable(startDate, endDate)) {
-                    candidates.add(v);
-                    manualNum--;
+                    v.insertRentalRecord(id, v, startDate, endDate);
+                    k--;
                 }
 
             }
@@ -185,12 +188,11 @@ public class VanRentalSystem {
                 manualNum = manualLeft;
                 i++;
             }*/
-        if (autoNum!=0 || manualNum!=0) {
+        if (j!=0 || k!=0) {
+            System.out.println("debug");
             return false;
         }
-        for (Vehicle candidate : candidates) {
-            candidate.insertRentalRecord(id, candidate, startDate, endDate);
-        }
+        System.out.println("debug");
         return true;
 
     }
