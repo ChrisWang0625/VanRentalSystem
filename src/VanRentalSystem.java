@@ -202,7 +202,7 @@ public class VanRentalSystem {
      * @param autoNum number of automatic vans demanded
      * @param manualNum number of manual vans demanded
      * @param allVehicles ArrayList of all vehicles
-     * @return
+     * @return true if the request can be done, and false if there is not enough available vans for rent
      */
     private static boolean checkRequest(Calendar startDate, Calendar endDate,
                                          int autoNum, int manualNum, ArrayList<Vehicle> allVehicles) {
@@ -225,12 +225,11 @@ public class VanRentalSystem {
     /**
      * this function is to process the booking or change of booking by looping through all
      * locations until all the requests are satisfied.
-     * @param id
-     * @param startDate
-     * @param endDate
-     * @param autoNum
-     * @param manualNum
-     * @return
+     * @param id id of the request
+     * @param startDate start date of the request
+     * @param endDate end date of the request
+     * @param autoNum number of automatic vans required
+     * @param manualNum number of manual vans required
      */
     private static void processRequest (int id, Calendar startDate, Calendar endDate,
                                            int autoNum, int manualNum){
@@ -250,7 +249,7 @@ public class VanRentalSystem {
      * @param hour string of hour
      * @param month string of month
      * @param day string of day
-     * @return
+     * @return the Calendar object of the date
      */
     private static Calendar convertStringToCalendar(String hour, String month, String day) {
         Calendar calendar = Calendar.getInstance();
@@ -265,7 +264,7 @@ public class VanRentalSystem {
     /**
      * convert a string of month to a integer
      * @param month a string of short month e.g. "Jan"
-     * @return
+     * @return the string of month
      */
     public static int convertStringToMonth(String month){
         int monthInInt = 0;
