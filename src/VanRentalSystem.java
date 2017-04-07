@@ -82,12 +82,16 @@ public class VanRentalSystem {
                 Location location = getLocation(cmd[1]);
 
                 ArrayList<Vehicle> vehicles = location.getVehicles();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm MMM dd");
 
                 for (Vehicle vehicle : vehicles) {
                     ArrayList<Booking> bookings = vehicle.getBookings();
                     for (Booking booking : bookings) {
+                        Calendar tempStartDate = (Calendar) booking.getStartDate().clone();
+                        Calendar tempEndDate = (Calendar) booking.getEndDate().clone();
                         System.out.println(booking.getVehicle().getLocation().getName() + " "
-                        + booking.getVehicle().getName());
+                        + booking.getVehicle().getName() + " " + simpleDateFormat.format(tempStartDate.getTime())
+                                + " " + simpleDateFormat.format(tempEndDate.getTime()));
                     }
                 }
             }

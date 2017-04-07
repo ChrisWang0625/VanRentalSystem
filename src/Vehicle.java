@@ -58,10 +58,11 @@ public class Vehicle {
      */
     public boolean isAvailable(Calendar startDate, Calendar endDate) {
         for (Booking booking : bookings){
-            endDate.add(Calendar.HOUR_OF_DAY, 1);
-            Calendar coolDownEndDate = (Calendar) booking.getEndDate().clone();
+            Calendar tempEndDate = (Calendar) endDate.clone();
+            tempEndDate.add(Calendar.HOUR_OF_DAY, 1);
+            Calendar coolDownEndDate = booking.getEndDate();
             coolDownEndDate.add(Calendar.HOUR_OF_DAY, 1);
-            if (endDate.before(booking.getStartDate())||startDate.after(coolDownEndDate)) continue;
+            if (tempEndDate.before(booking.getStartDate())||startDate.after(coolDownEndDate)) continue;
             else {
                 Calendar tempDate = (Calendar) startDate.clone();
                 while (tempDate.compareTo(endDate) != 0) {
