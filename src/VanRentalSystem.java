@@ -230,6 +230,7 @@ public class VanRentalSystem {
         }
 
         if (autoAvailable < autoNum || manualAvailable < manualNum) return false;
+        else if (autoNum == 0 && manualNum == 0) return false;
         else return true;
     }
 
