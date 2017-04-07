@@ -9,6 +9,7 @@ import java.util.*;
 public class VanRentalSystem {
 
     private static ArrayList<Location> locations = new ArrayList<>();
+    private static ArrayList<Vehicle> allVehicles = new ArrayList<>();
     private static final int CURRENT_YEAR = 2017;
 
     /**
@@ -28,9 +29,8 @@ public class VanRentalSystem {
             if (cmd.length==0) continue;
             if (cmd[0].equals("Location")) {
                 depotVehicle(cmd[1], cmd[2], cmd[3]);
+                allVehicles = getAllVehicles();
             } else if (cmd[0].equals("Request") || cmd[0].equals("Change")) {
-                ArrayList<Vehicle> allVehicles = getAllVehicles();
-                //System.out.println(cmd[0] + " " + cmd[1] + " debug");
                 int id = Integer.parseInt(cmd[1]);
                 Calendar startDate = convertStringToCalendar(cmd[2], cmd[3], cmd[4]);
                 Calendar endDate = convertStringToCalendar(cmd[5], cmd[6], cmd[7]);
@@ -41,7 +41,6 @@ public class VanRentalSystem {
                     else if (cmd[i].equals("Manual")) numManual = Integer.parseInt(cmd[i-1]);
                 }
                 if (cmd[0].equals("Request")) {
-
                     if (checkRequest(startDate, endDate, numAuto, numManual, allVehicles)) {
                         System.out.print("Booking " + id);
                         processRequest(id, startDate, endDate, numAuto, numManual);
@@ -81,18 +80,14 @@ public class VanRentalSystem {
                 }
             } else if (cmd[0].equals("Print")) {
                 Location location = getLocation(cmd[1]);
+
                 ArrayList<Vehicle> vehicles = location.getVehicles();
+
                 for (Vehicle vehicle : vehicles) {
-                    Map<Calendar, Booking> map = new TreeMap<>();
                     ArrayList<Booking> bookings = vehicle.getBookings();
                     for (Booking booking : bookings) {
-                        map.put(booking.getStartDate(), booking);
-                    }
-                    System.out.print(cmd[1] + " " + vehicle.getName() + " ");
-                    for (Map.Entry<Calendar, Booking> mapEntry : map.entrySet()) {
-                        Calendar calendar = mapEntry.getKey();
-                        System.out.print(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH) + " "
-                                + calendar.get(Calendar.DATE));
+                        System.out.println(booking.getVehicle().getLocation().getName() + " "
+                        + booking.getVehicle().getName());
                     }
                 }
             }
@@ -231,7 +226,6 @@ public class VanRentalSystem {
 
         int i = 0;
         while (i < locations.size()) {
-
             Location location = locations.get(i);
             int[] arr = location.book(id, startDate, endDate, autoNum, manualNum);
             int prevAuto = autoNum;
@@ -241,7 +235,6 @@ public class VanRentalSystem {
             if (autoNum == 0 && manualNum == 0) break;
             if (autoNum != prevAuto || manualNum != prevManual) System.out.print(";");
             i++;
-
         }
 
     }

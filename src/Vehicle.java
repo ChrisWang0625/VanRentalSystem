@@ -42,19 +42,33 @@ public class Vehicle {
         return this.bookings;
     }
 
+    /**
+     * function to get location of the vehicle
+     * @return location of the vehicle
+     */
     public Location getLocation() {return this.location;}
 
 
+    /**
+     * function to check the availability of vehicle in a given period of time, the 1 hour cool down time of the booking is
+     * also considered when implementing this function
+     * @param startDate start date of the period
+     * @param endDate end date of the period
+     * @return
+     */
     public boolean isAvailable(Calendar startDate, Calendar endDate) {
         for (Booking booking : bookings){
-            if (endDate.before(booking.getStartDate())||startDate.after(booking.getEndDate())) continue;
+            endDate.add(Calendar.HOUR_OF_DAY, 1);
+            Calendar coolDownEndDate = (Calendar) booking.getEndDate().clone();
+            coolDownEndDate.add(Calendar.HOUR_OF_DAY, 1);
+            if (endDate.before(booking.getStartDate())||startDate.after(coolDownEndDate)) continue;
             else {
                 Calendar tempDate = (Calendar) startDate.clone();
                 while (tempDate.compareTo(endDate) != 0) {
-                    if (tempDate.compareTo(booking.getStartDate()) >= 0 && tempDate.compareTo(booking.getEndDate())<=0) return false;
-                    tempDate.add(Calendar.DATE, 1);
+                    if (tempDate.compareTo(booking.getStartDate()) >= 0 && tempDate.compareTo(coolDownEndDate)<=0) return false;
+                    tempDate.add(Calendar.HOUR_OF_DAY, 1);
                 }
-                if (tempDate.compareTo(booking.getStartDate())>=0 && tempDate.compareTo(booking.getEndDate()) <= 0) return false;
+                if (tempDate.compareTo(booking.getStartDate())>=0 && tempDate.compareTo(coolDownEndDate) <= 0) return false;
             }
         }
         return true;
