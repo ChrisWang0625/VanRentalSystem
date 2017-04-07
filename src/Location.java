@@ -37,6 +37,16 @@ public class Location {
         vehicles.add(vehicle);
     }
 
+    /**
+     * Function to browse through the vehicles in the depot and book those are available and fit the requirement. And
+     * return the demanded
+     * @param id
+     * @param startDate
+     * @param endDate
+     * @param autoRequested
+     * @param manualRequested
+     * @return
+     */
     public int[] book(int id, Calendar startDate, Calendar endDate, int autoRequested,
                                 int manualRequested){
         ArrayList<Vehicle> candidates = new ArrayList<>();

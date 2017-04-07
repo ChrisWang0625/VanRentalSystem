@@ -117,6 +117,9 @@ public class VanRentalSystem {
         location.addVehicle(new Vehicle(vehicleName, vehicleType, location));
     }
 
+    /**
+     * @return ArrayList of all vehicles in the system.
+     */
     private static ArrayList<Vehicle> getAllVehicles() {
         ArrayList<Vehicle> allVehicles = new ArrayList<>();
         for (Location l : locations) {
@@ -167,7 +170,7 @@ public class VanRentalSystem {
 
     /**
      * function to cancel a list of booking given
-     * @param bookingArrayList
+     * @param bookingArrayList ArrayList of bookings to be canceled
      */
     private static void cancelBooking(ArrayList<Booking> bookingArrayList) {
         for (Booking booking : bookingArrayList) {
@@ -191,11 +194,14 @@ public class VanRentalSystem {
 
 
     /**
-     * @param startDate
-     * @param endDate
-     * @param autoNum
-     * @param manualNum
-     * @param allVehicles
+     * this function is used to check if the requirement can be fulfilled by check if there is enough automatic and manual
+     * vans available. If not, the system will not process the booking or change, if there is enough vehicles available
+     * in the given period of time, then proceed to booking.
+     * @param startDate start date of the request
+     * @param endDate end date of the request
+     * @param autoNum number of automatic vans demanded
+     * @param manualNum number of manual vans demanded
+     * @param allVehicles ArrayList of all vehicles
      * @return
      */
     private static boolean checkRequest(Calendar startDate, Calendar endDate,
@@ -211,13 +217,14 @@ public class VanRentalSystem {
             }
         }
 
-        //System.out.println(autoAvailable + " " + manualAvailable);
         if (autoAvailable < autoNum || manualAvailable < manualNum) return false;
         else return true;
     }
 
 
     /**
+     * this function is to process the booking or change of booking by looping through all
+     * locations until all the requests are satisfied.
      * @param id
      * @param startDate
      * @param endDate
@@ -227,10 +234,7 @@ public class VanRentalSystem {
      */
     private static void processRequest (int id, Calendar startDate, Calendar endDate,
                                            int autoNum, int manualNum){
-
-        int i = 0;
-        while (i < locations.size()) {
-            Location location = locations.get(i);
+        for (Location location : locations){
             int[] arr = location.book(id, startDate, endDate, autoNum, manualNum);
             int prevAuto = autoNum;
             int prevManual = manualNum;
@@ -238,9 +242,7 @@ public class VanRentalSystem {
             manualNum = arr[1];
             if (autoNum == 0 && manualNum == 0) break;
             if (autoNum != prevAuto || manualNum != prevManual) System.out.print(";");
-            i++;
         }
-
     }
 
     /**
