@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="debbef2b-142e-4363-9b11-586ec1f34690" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/VanRentalSystem.java" afterPath="$PROJECT_DIR$/src/VanRentalSystem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Vehicle.java" afterPath="$PROJECT_DIR$/src/Vehicle.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,7 +34,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="VanRentalSystem.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="VanRentalSystem.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/VanRentalSystem.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="24">
@@ -66,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Vehicle.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Vehicle.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Vehicle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="61" column="48" lean-forward="false" selection-start-line="61" selection-start-column="48" selection-end-line="61" selection-end-column="48" />
+            <state relative-caret-position="168">
+              <caret line="61" column="95" lean-forward="false" selection-start-line="61" selection-start-column="95" selection-end-line="61" selection-end-column="95" />
               <folding />
             </state>
           </provider>
@@ -103,8 +103,8 @@
       <list>
         <option value="$PROJECT_DIR$/src/Location.java" />
         <option value="$PROJECT_DIR$/src/Booking.java" />
-        <option value="$PROJECT_DIR$/src/Vehicle.java" />
         <option value="$PROJECT_DIR$/src/VanRentalSystem.java" />
+        <option value="$PROJECT_DIR$/src/Vehicle.java" />
       </list>
     </option>
   </component>
@@ -635,7 +635,7 @@
       <workItem from="1491516435010" duration="1554000" />
       <workItem from="1491520483692" duration="2993000" />
       <workItem from="1491525106961" duration="25144000" />
-      <workItem from="1491561031121" duration="4566000" />
+      <workItem from="1491561031121" duration="5822000" />
     </task>
     <task id="LOCAL-00001" summary="Add main class">
       <created>1490056366094</created>
@@ -742,11 +742,18 @@
       <option name="project" value="LOCAL" />
       <updated>1491564067806</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="little twist on convert string to calendar function">
+      <created>1491566649407</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1491566649407</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137518000" />
+    <option name="totallyTimeSpent" value="138774000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -771,7 +778,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897863" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991362" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897863" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32461354" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32461354" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43586698" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -814,7 +821,8 @@
     <MESSAGE value="implemented print and fixed a bug that add 2 hour to end date when booking" />
     <MESSAGE value="finally..passed sample input" />
     <MESSAGE value="use collection to sort the bookings by date" />
-    <option name="LAST_COMMIT_MESSAGE" value="use collection to sort the bookings by date" />
+    <MESSAGE value="little twist on convert string to calendar function" />
+    <option name="LAST_COMMIT_MESSAGE" value="little twist on convert string to calendar function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1259,14 +1267,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Vehicle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="61" column="48" lean-forward="false" selection-start-line="61" selection-start-column="48" selection-end-line="61" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/VanRentalSystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24">
@@ -1274,6 +1274,14 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Vehicle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="61" column="95" lean-forward="false" selection-start-line="61" selection-start-column="95" selection-end-line="61" selection-end-column="95" />
+          <folding />
         </state>
       </provider>
     </entry>
