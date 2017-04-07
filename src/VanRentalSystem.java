@@ -82,7 +82,7 @@ public class VanRentalSystem {
                 Location location = getLocation(cmd[1]);
 
                 ArrayList<Vehicle> vehicles = location.getVehicles();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:00 MMM dd");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm MMM dd");
 
                 for (Vehicle vehicle : vehicles) {
                     ArrayList<Booking> bookings = vehicle.getBookings();
@@ -268,6 +268,7 @@ public class VanRentalSystem {
         int monthInt = convertStringToMonth(month);
         calendar.set(Calendar.MONTH, monthInt);
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
         calendar.set(Calendar.YEAR, CURRENT_YEAR);
         return calendar;
