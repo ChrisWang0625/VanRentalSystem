@@ -37,7 +37,7 @@ public class Location {
         vehicles.add(vehicle);
     }
 
-    public int[] book(String requestType, int id, Calendar startDate, Calendar endDate, int autoRequested,
+    public int[] book(int id, Calendar startDate, Calendar endDate, int autoRequested,
                                 int manualRequested){
         ArrayList<Vehicle> candidates = new ArrayList<>();
 
@@ -64,17 +64,17 @@ public class Location {
         }
 
         int[] returnArray = {i, j};
+        if (count != 0) System.out.print(" " + this.name + " ");
+        StringBuilder sb = new StringBuilder();
+        Iterator<Vehicle> candidateIterator = candidates.iterator();
 
-        if (count == 0) return returnArray;
-        else {
-            System.out.print(" " + this.name);
-            for (Vehicle candidate: candidates) {
-                //System.out.println(candidate.getName() + " " + candidate.getType());
-                candidate.insertRentalRecord(id, candidate, startDate, endDate);
-
+        while(candidateIterator.hasNext()) {
+            Vehicle candidate = candidateIterator.next();
+            candidate.insertRentalRecord(id, candidate, startDate, endDate);
+            if (candidateIterator.hasNext()) {
+                System.out.print(", ");
             }
         }
-        System.out.print(";");
         return returnArray;
     }
 }

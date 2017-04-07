@@ -66,7 +66,7 @@ public class Vehicle {
      */
     public void insertRentalRecord(int id, Vehicle vehicle, Calendar startDate, Calendar endDate){
         bookings.add(new Booking(id, vehicle, startDate, endDate));
-        System.out.print(", " + this.name);
+        System.out.print(this.name);
     }
 
     /**

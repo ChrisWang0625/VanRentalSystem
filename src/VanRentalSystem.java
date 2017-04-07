@@ -9,7 +9,6 @@ import java.util.*;
 public class VanRentalSystem {
 
     private static ArrayList<Location> locations = new ArrayList<>();
-    private static ArrayList<Vehicle> vehicles = new ArrayList<>();
     private static final int CURRENT_YEAR = 2017;
 
     /**
@@ -30,6 +29,7 @@ public class VanRentalSystem {
             if (cmd[0].equals("Location")) {
                 depotVehicle(cmd[1], cmd[2], cmd[3]);
             } else if (cmd[0].equals("Request") || cmd[0].equals("Change")) {
+                ArrayList<Vehicle> allVehicles = getAllVehicles();
                 //System.out.println(cmd[0] + " " + cmd[1] + " debug");
                 int id = Integer.parseInt(cmd[1]);
                 Calendar startDate = convertStringToCalendar(cmd[2], cmd[3], cmd[4]);
@@ -42,7 +42,7 @@ public class VanRentalSystem {
                 }
                 if (cmd[0].equals("Request")) {
 
-                    if (checkRequest(startDate, endDate, numAuto, numManual, vehicles)) {
+                    if (checkRequest(startDate, endDate, numAuto, numManual, allVehicles)) {
                         System.out.print("Booking " + id);
                         processRequest(id, startDate, endDate, numAuto, numManual);
 
@@ -58,9 +58,15 @@ public class VanRentalSystem {
                     if (bookingArrayList.size()==0) System.out.println("Change rejected");
                     else {
                         cancelBooking(bookingArrayList);
-                        if (!checkRequest(startDate, endDate, numAuto, numManual, vehicles)) {
+                        if (!checkRequest(startDate, endDate, numAuto, numManual, allVehicles)) {
                             recoverBooking(bookingArrayList);
                             System.out.println("Change Rejected");
+                        } else {
+                            System.out.print("Change " + id);
+                            processRequest(id, startDate, endDate, numAuto, numManual);
+                            if(sc.hasNextLine()) {
+                                System.out.println();
+                            }
                         }
                     }
                 }
@@ -110,7 +116,17 @@ public class VanRentalSystem {
             locations.add(location);
         }
         location.addVehicle(new Vehicle(vehicleName, vehicleType, location));
-        vehicles.add(new Vehicle(vehicleName, vehicleType, location));
+    }
+
+    private static ArrayList<Vehicle> getAllVehicles() {
+        ArrayList<Vehicle> allVehicles = new ArrayList<>();
+        for (Location l : locations) {
+            ArrayList<Vehicle> vs = l.getVehicles();
+            for (Vehicle v: vs) {
+                allVehicles.add(v);
+            }
+        }
+        return allVehicles;
     }
 
     /**
@@ -210,48 +226,23 @@ public class VanRentalSystem {
      * @param manualNum
      * @return
      */
-    private static boolean processRequest (int id, Calendar startDate, Calendar endDate,
+    private static void processRequest (int id, Calendar startDate, Calendar endDate,
                                            int autoNum, int manualNum){
-        //ArrayList<Vehicle> candidates = new ArrayList<>();
+
         int i = 0;
-        int j = autoNum;
-        int k = manualNum;
-        for (Vehicle v : vehicles) {
-            if(j == 0 && k == 0) {
-                break;
-            }
-            if (v.getType().equals("Automatic")){
-                if (j == 0) continue;
-                if (v.isAvailable(startDate, endDate)){
-                    v.insertRentalRecord(id, v, startDate, endDate);
-                    j--;
-                }
-            } else if (v.getType().equals("Manual")) {
-                if (k == 0) continue;
-                if (v.isAvailable(startDate, endDate)) {
-                    v.insertRentalRecord(id, v, startDate, endDate);
-                    k--;
-                }
+        while (i < locations.size()) {
 
-            }
+            Location location = locations.get(i);
+            int[] arr = location.book(id, startDate, endDate, autoNum, manualNum);
+            int prevAuto = autoNum;
+            int prevManual = manualNum;
+            autoNum = arr[0];
+            manualNum = arr[1];
+            if (autoNum == 0 && manualNum == 0) break;
+            if (autoNum != prevAuto || manualNum != prevManual) System.out.print(";");
+            i++;
+
         }
-
-
-            //int[] arr = location.book(requestType, id, startDate, endDate, autoNum, manualNum);
-            /*int autoLeft = arr[0];
-            int manualLeft = arr[1];*//*
-            if (autoLeft == 0 && manualLeft == 0) break;
-            else {
-                autoNum = autoLeft;
-                manualNum = manualLeft;
-                i++;
-            }*/
-        if (j!=0 || k!=0) {
-            System.out.println("debug");
-            return false;
-        }
-        System.out.println("debug");
-        return true;
 
     }
 
