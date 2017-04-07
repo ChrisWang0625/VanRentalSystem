@@ -10,6 +10,7 @@ public class Vehicle {
     private Location location;
 
     /**
+     * constructor
      * @param name name of the vehicle
      * @param type type of the vehicle
      */

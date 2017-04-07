@@ -11,6 +11,7 @@ public class Booking {
     private Calendar endDate;
 
     /**
+     * constructor
      * @param id id of the booking
      * @param vehicle vehicle booked
      * @param startDate start date of the booking

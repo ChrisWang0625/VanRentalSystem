@@ -12,6 +12,11 @@ public class VanRentalSystem {
     private static ArrayList<Vehicle> vehicles = new ArrayList<>();
     private static final int CURRENT_YEAR = 2017;
 
+    /**
+     * main function
+     * @param args command line arguments
+     * @throws ParseException
+     */
     public static void main(String args[]) throws ParseException {
         Scanner sc = null;
         try {
@@ -39,7 +44,7 @@ public class VanRentalSystem {
 
                     if (checkRequest(startDate, endDate, numAuto, numManual, vehicles)) {
                         System.out.print("Booking " + id);
-                        processRequest("Request", id, startDate, endDate, numAuto, numManual);
+                        processRequest(id, startDate, endDate, numAuto, numManual);
 
                         if(sc.hasNextLine()) {
                             System.out.println();
@@ -59,7 +64,31 @@ public class VanRentalSystem {
                         }
                     }
                 }
-
+            } else if (cmd[0].equals("Cancel")) {
+                int id = Integer.parseInt(cmd[1]);
+                ArrayList<Booking> backupBooking = getBookingList(id);
+                if (backupBooking.size()==0) {
+                    System.out.println("Cancel Rejected");
+                } else {
+                    cancelBooking(backupBooking);
+                    System.out.println("Cancel " + id);
+                }
+            } else if (cmd[0].equals("Print")) {
+                Location location = getLocation(cmd[1]);
+                ArrayList<Vehicle> vehicles = location.getVehicles();
+                for (Vehicle vehicle : vehicles) {
+                    Map<Calendar, Booking> map = new TreeMap<>();
+                    ArrayList<Booking> bookings = vehicle.getBookings();
+                    for (Booking booking : bookings) {
+                        map.put(booking.getStartDate(), booking);
+                    }
+                    System.out.print(cmd[1] + " " + vehicle.getName() + " ");
+                    for (Map.Entry<Calendar, Booking> mapEntry : map.entrySet()) {
+                        Calendar calendar = mapEntry.getKey();
+                        System.out.print(calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH) + " "
+                                + calendar.get(Calendar.DATE));
+                    }
+                }
             }
         }
 
@@ -68,9 +97,15 @@ public class VanRentalSystem {
 
     }
 
-    private static void depotVehicle(String locationName, String vehicleName, String vehicleType){
+    /**
+     * function to depot vehicle to the location, if location doesn't exist, the function will create a new location and depot vehicle to location
+     * @param locationName the name of the location
+     * @param vehicleName the name of the vehicle
+     * @param vehicleType the type of gear of the vehicle
+     */
+    private static void depotVehicle(String locationName, String vehicleName, String vehicleType) {
         Location location = getLocation(locationName);
-        if (location == null){
+        if (location == null) {
             location = new Location(locationName);
             locations.add(location);
         }
@@ -78,7 +113,12 @@ public class VanRentalSystem {
         vehicles.add(new Vehicle(vehicleName, vehicleType, location));
     }
 
-    private static Location getLocation (String locationName){
+    /**
+     * function to get the location given location name
+     * @param locationName the name of the location
+     * @return Location
+     */
+    private static Location getLocation (String locationName) {
         for (Location location: locations){
             if(location.getName().equals(locationName)){
                 return location;
@@ -88,7 +128,12 @@ public class VanRentalSystem {
     }
 
 
-    private static ArrayList<Booking> getBookingList(int requestID){
+    /**
+     * function to search and return a list of booking using a booking id
+     * @param requestID the id of request
+     * @return a list of booking of the required booking id
+     */
+    private static ArrayList<Booking> getBookingList(int requestID) {
         ArrayList<Booking> bookingArrayList = new ArrayList<>();
         for (Location location : locations) {
             ArrayList<Vehicle> vehicles = location.getVehicles();
@@ -105,6 +150,10 @@ public class VanRentalSystem {
         return bookingArrayList;
     }
 
+    /**
+     * function to cancel a list of booking given
+     * @param bookingArrayList
+     */
     private static void cancelBooking(ArrayList<Booking> bookingArrayList) {
         for (Booking booking : bookingArrayList) {
             Vehicle vehicle = booking.getVehicle();
@@ -113,6 +162,10 @@ public class VanRentalSystem {
         }
     }
 
+    /**
+     * function to recover booking when change or cancel rejected
+     * @param bookingArrayList the ArrayList of booking to be recovered
+     */
     private static void recoverBooking(ArrayList<Booking> bookingArrayList) {
         for (Booking booking : bookingArrayList) {
             Vehicle vehicle = booking.getVehicle();
@@ -121,17 +174,15 @@ public class VanRentalSystem {
         }
     }
 
-    public static ArrayList<Vehicle> getAllVehicles() {
-        ArrayList<Vehicle> allVehicles = new ArrayList<>();
-        for (Location location: locations) {
-            ArrayList<Vehicle> depotVehicles = location.getVehicles();
-            for (Vehicle vehicle : depotVehicles) {
-                allVehicles.add(vehicle);
-            }
-        }
-        return allVehicles;
-    }
 
+    /**
+     * @param startDate
+     * @param endDate
+     * @param autoNum
+     * @param manualNum
+     * @param allVehicles
+     * @return
+     */
     private static boolean checkRequest(Calendar startDate, Calendar endDate,
                                          int autoNum, int manualNum, ArrayList<Vehicle> allVehicles) {
 
@@ -151,8 +202,15 @@ public class VanRentalSystem {
     }
 
 
-
-    private static boolean processRequest (String requestType, int id, Calendar startDate, Calendar endDate,
+    /**
+     * @param id
+     * @param startDate
+     * @param endDate
+     * @param autoNum
+     * @param manualNum
+     * @return
+     */
+    private static boolean processRequest (int id, Calendar startDate, Calendar endDate,
                                            int autoNum, int manualNum){
         //ArrayList<Vehicle> candidates = new ArrayList<>();
         int i = 0;
@@ -197,6 +255,13 @@ public class VanRentalSystem {
 
     }
 
+    /**
+     * convert 3 strings to a calendar object
+     * @param hour string of hour
+     * @param month string of month
+     * @param day string of day
+     * @return
+     */
     private static Calendar convertStringToCalendar(String hour, String month, String day) {
         Calendar calendar = Calendar.getInstance();
         int monthInt = convertStringToMonth(month);
@@ -207,6 +272,11 @@ public class VanRentalSystem {
         return calendar;
     }
 
+    /**
+     * convert a string of month to a integer
+     * @param month a string of short month e.g. "Jan"
+     * @return
+     */
     public static int convertStringToMonth(String month){
         int monthInInt = 0;
         if (month.equals("Jan"))

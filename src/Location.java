@@ -6,40 +6,33 @@ public class Location {
     private String name;
     private ArrayList<Vehicle> vehicles;
 
+    /**
+     * constructor
+     * @param name of the location
+     */
     public Location(String name){
         this.name = name;
         this.vehicles = new ArrayList<>();
     }
 
-
+    /**
+     * @return name of the location
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return list of vehicles depot on the location
+     */
     public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
 
-    public ArrayList<Vehicle> getAutomatics() {
-        ArrayList<Vehicle> automatics = new ArrayList<>();
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.getType().equals("Automatic")){
-                automatics.add(vehicle);
-            }
-        }
-        return automatics;
-    }
-
-    public ArrayList<Vehicle> getManual() {
-        ArrayList<Vehicle> manuals = new ArrayList<>();
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.getType().equals("Manual")){
-                manuals.add(vehicle);
-            }
-        }
-        return manuals;
-    }
-
+    /**
+     * add vehicle to the location
+     * @param vehicle vehicle to add to the location
+     */
     public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
     }
